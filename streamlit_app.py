@@ -42,5 +42,10 @@ my_cnx = snowflake.connector.connect(**streamlit.secrets["snowflake"])
 my_cur = my_cnx.cursor()
 my_cur.execute("select * from pc_rivery_db.public.fruit_load_list")
 my_data_row = my_cur.fetchall()
+
+my_data_row = my_data_row.set_index('Fruit')
+fruits_select= streamlit.multiselect("Pick some fruits:", list(my_data_row.index))
+fruits_to_shows = my_data_row.loc[fruits_select]
+
 streamlit.header("The Fruit Load List contains:")
 streamlit.dataframe(my_data_row)
